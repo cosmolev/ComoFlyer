@@ -4,9 +4,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -16,7 +13,6 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
-import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
@@ -27,8 +23,6 @@ import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -39,7 +33,6 @@ public class TestDepthOfFieldLev extends SimpleApplication {
     private FilterPostProcessor fpp;
     private Vector3f lightDir = new Vector3f(-4.9236743f, -1.27054665f, 5.896916f);
     TerrainQuad terrain;
-    Material matRock;
 
     public static void main(String[] args) {
         TestDepthOfFieldLev app = new TestDepthOfFieldLev();
@@ -81,12 +74,9 @@ public class TestDepthOfFieldLev extends SimpleApplication {
         cam.setLocation(new Vector3f(0, 30, 0));
         cam.setRotation(new Quaternion().fromAngles(new float[]{FastMath.PI * 0.06f, FastMath.PI * 0.65f, 0}));
 
-
         Spatial sky = SkyFactory.createSky(assetManager, "assets/Scenes/Beach/FullskiesSunset0068.dds", false);
         sky.setLocalScale(350);
         mainScene.attachChild(sky);
-
-
 
         fpp = new FilterPostProcessor(assetManager);
         //     fpp.setNumSamples(4);
@@ -98,18 +88,17 @@ public class TestDepthOfFieldLev extends SimpleApplication {
     }
 
     private void createTerrain(Node rootNode) {
-        matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        Material matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matRock.setBoolean("useTriPlanarMapping", false);
         matRock.setBoolean("WardIso", true);
-        //matRock.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
-        //Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
-        Texture heightMapImage = assetManager.loadTexture("como512.png");
+
         Texture white = assetManager.loadTexture("grey.png");
         white.setWrap(Texture.WrapMode.Repeat);
         matRock.setTexture("DiffuseMap", white);
         matRock.setFloat("DiffuseMap_0_scale", 64);
 
         AbstractHeightMap heightmap = null;
+        Texture heightMapImage = assetManager.loadTexture("como512.png");
         try {
             heightmap = new ImageBasedHeightMap(heightMapImage.getImage(), 0.25f);
             heightmap.load();
@@ -117,8 +106,6 @@ public class TestDepthOfFieldLev extends SimpleApplication {
             e.printStackTrace();
         }
         terrain = new TerrainQuad("terrain", 65, 513, heightmap.getHeightMap());
-        List<Camera> cameras = new ArrayList<Camera>();
-        cameras.add(getCamera());
         terrain.setMaterial(matRock);
         terrain.setLocalScale(new Vector3f(5, 5, 5));
         terrain.setLocalTranslation(new Vector3f(0, -30, 0));
