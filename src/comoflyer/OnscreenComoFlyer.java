@@ -12,6 +12,7 @@ public class OnscreenComoFlyer extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        flyCam.setMoveSpeed(50);
         setDisplayFps(false);       // to hide the FPS
         setDisplayStatView(false);
         assetManager.registerLocator("D:\\ComoFlyer\\", FileLocator.class);
