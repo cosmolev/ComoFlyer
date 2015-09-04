@@ -10,6 +10,8 @@ import javafx.util.Pair;
 
 public abstract class GeoApplication extends SimpleApplication {
 
+    private static final String APP_LOCATION = "D:\\ComoFlyer\\";
+
     int latitude;
     int latitudeSeconds;
     int longitude;
@@ -42,7 +44,7 @@ public abstract class GeoApplication extends SimpleApplication {
     }
 
     Node setSomeCommonSettings(){
-        assetManager.registerLocator("D:\\ComoFlyer\\", FileLocator.class);
+        assetManager.registerLocator(APP_LOCATION, FileLocator.class);
 
         Node mainScene = new Node("Main Scene");
         rootNode.attachChild(mainScene);
