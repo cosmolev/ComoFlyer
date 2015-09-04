@@ -25,7 +25,7 @@ public class OffscreenComoFlyer extends GeoApplication {
     private FrameBuffer offBuffer;
 
     private static final int NUM_OF_ROTATIONS = 8;
-    private int width = 200, height = 200;
+    private int width = 800, height = 800;
 
     private final ByteBuffer cpuBuf = BufferUtils.createByteBuffer(width * height * 4);
     private final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);

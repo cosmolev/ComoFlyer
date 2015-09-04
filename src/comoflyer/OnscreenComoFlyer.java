@@ -27,7 +27,7 @@ public class OnscreenComoFlyer extends GeoApplication {
     }
 
     public static void main(String[] args) {
-        OnscreenComoFlyer app = new OnscreenComoFlyer(45.814149, 9.082836);
+        OnscreenComoFlyer app = new OnscreenComoFlyer(45.5, 6.5);
         app.start();
     }
 
