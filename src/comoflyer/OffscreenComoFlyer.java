@@ -36,18 +36,19 @@ public class OffscreenComoFlyer extends GeoApplication {
 
     private float[][] panoramaDistanceMatrix = new float[height][NUM_OF_ROTATIONS*width];
 
+    private static final float rotationCorrection = 157.5f;
     private static Quaternion[] turns = new Quaternion[10];
     static {
-        turns[0] = new Quaternion();turns[0].fromAngleAxis(-FastMath.PI * 0 / 180, new Vector3f(0, 1, 0));
-        turns[1] = new Quaternion();turns[1].fromAngleAxis(-FastMath.PI * 45 / 180, new Vector3f(0, 1, 0));
-        turns[2] = new Quaternion();turns[2].fromAngleAxis(-FastMath.PI * 90 / 180, new Vector3f(0, 1, 0));
-        turns[3] = new Quaternion();turns[3].fromAngleAxis(-FastMath.PI * 135 / 180, new Vector3f(0, 1, 0));
-        turns[4] = new Quaternion();turns[4].fromAngleAxis(-FastMath.PI * 180 / 180, new Vector3f(0, 1, 0));
-        turns[5] = new Quaternion();turns[5].fromAngleAxis(-FastMath.PI * 225 / 180, new Vector3f(0, 1, 0));
-        turns[6] = new Quaternion();turns[6].fromAngleAxis(-FastMath.PI * 270 / 180, new Vector3f(0, 1, 0));
-        turns[7] = new Quaternion();turns[7].fromAngleAxis(-FastMath.PI * 315 / 180, new Vector3f(0, 1, 0));
-        turns[8] = new Quaternion();turns[8].fromAngleAxis(-FastMath.PI * 360 / 180, new Vector3f(0, 1, 0));
-        turns[9] = new Quaternion();turns[9].fromAngleAxis(-FastMath.PI * 405 / 180, new Vector3f(0, 1, 0));
+        turns[0] = new Quaternion();turns[0].fromAngleAxis(-FastMath.PI * (rotationCorrection + 0) / 180, new Vector3f(0, 1, 0));
+        turns[1] = new Quaternion();turns[1].fromAngleAxis(-FastMath.PI * (rotationCorrection + 45) / 180, new Vector3f(0, 1, 0));
+        turns[2] = new Quaternion();turns[2].fromAngleAxis(-FastMath.PI * (rotationCorrection + 90) / 180, new Vector3f(0, 1, 0));
+        turns[3] = new Quaternion();turns[3].fromAngleAxis(-FastMath.PI * (rotationCorrection + 135) / 180, new Vector3f(0, 1, 0));
+        turns[4] = new Quaternion();turns[4].fromAngleAxis(-FastMath.PI * (rotationCorrection + 180) / 180, new Vector3f(0, 1, 0));
+        turns[5] = new Quaternion();turns[5].fromAngleAxis(-FastMath.PI * (rotationCorrection + 225) / 180, new Vector3f(0, 1, 0));
+        turns[6] = new Quaternion();turns[6].fromAngleAxis(-FastMath.PI * (rotationCorrection + 270) / 180, new Vector3f(0, 1, 0));
+        turns[7] = new Quaternion();turns[7].fromAngleAxis(-FastMath.PI * (rotationCorrection + 315) / 180, new Vector3f(0, 1, 0));
+        turns[8] = new Quaternion();turns[8].fromAngleAxis(-FastMath.PI * (rotationCorrection + 360) / 180, new Vector3f(0, 1, 0));
+        turns[9] = new Quaternion();turns[9].fromAngleAxis(-FastMath.PI * (rotationCorrection + 405) / 180, new Vector3f(0, 1, 0));
     }
 
     public Pair<BufferedImage,float[][]> getImages(){
