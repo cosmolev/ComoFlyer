@@ -25,16 +25,21 @@ public class StaticDepthHelpers {
             }
     }
 
-    static BufferedImage getDepthImage(byte[] byteArr, int w, int h){
-        float[] floatArr = toFloatArr(byteArr);
-        float[] minMax = getMinMax(floatArr);
+    public static void writeOneMatrixIntoAnother(float[][] whatWeWrite, float[][] whereWeWrite, int startFromWidth, int startFromHeight){
+        for(int row = 0;row < whatWeWrite.length;row ++){
+            for(int column = 0;column < whatWeWrite[0].length;column ++){
+                whereWeWrite[startFromWidth+row][startFromHeight+column] = whatWeWrite[row][column];
+            }
+        }
+    }
+
+    static BufferedImage getDepthImage(float[][] floatMatrix){
+        float[] minMax = getMinMax(floatMatrix);
         float min = minMax[0];
         float max = minMax[1];
-        float[][] floatMatrix = flip(toMatrix(floatArr, w));
         float[][] normalizedMatrix = normalize(floatMatrix, min, max, 0, 1);
         int[][] normalizedIntArray = arrayToIntArrayWithInfinity(normalizedMatrix);
         return intArrayToImage(normalizedIntArray);
-        //ImageIO.write(intArrayToImage(normalizedIntArray), "PNG", new File("depthMaskNormalized.png"));
     }
 
     static void processDepthBytes(byte[] byteArr, int w, int h){
@@ -45,9 +50,9 @@ public class StaticDepthHelpers {
         float max = minMax[1];
 
         float[][] floatMatrix = flip(toMatrix(floatArr,w));
-        float[][] linearizedMatrix = linearize(floatMatrix,8,15000);
+        float[][] linearizedMatrix = linearize(floatMatrix, 8, 15000);
 
-        float[][] normalizedMatrix = normalize(floatMatrix,min, max, 0, 1);
+        float[][] normalizedMatrix = normalize(floatMatrix, min, max, 0, 1);
 
         float[] normMinMax = getMinMax(normalizedMatrix);
         float normMin = normMinMax[0];
@@ -81,6 +86,19 @@ public class StaticDepthHelpers {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public static BufferedImage arrayToImageOLD(float[][] array){
+        BufferedImage image = new BufferedImage(array[0].length, array.length, BufferedImage.TYPE_INT_RGB);
+
+        for (int x = 0; x < array.length; x++) {
+            for (int y = 0; y < array[0].length; y++) {
+                float f = array[x][y];
+                image.setRGB(y, array.length - (x + 1), Color.getHSBColor(0.0F, 0.0F, f).getRGB());
+            }
+        }
+
+        return image;
     }
 
     static BufferedImage arrayToImage(float[][] array){
@@ -173,7 +191,7 @@ public class StaticDepthHelpers {
 
     static double[] computeAngles(int height, double angle){
         if ( (height & 1) == 1 )throw new IllegalArgumentException("height should be even");
-        double[] halfFrustum = computeAnglesFrustumUpperPart(height/2,angle/2);
+        double[] halfFrustum = computeAnglesFrustumUpperPart(height / 2, angle / 2);
 
         double[] reversed = Arrays.copyOf(halfFrustum, halfFrustum.length);
         ArrayUtils.reverse(reversed);
@@ -209,7 +227,7 @@ public class StaticDepthHelpers {
         return normalizedArray;
     }
 
-    static float[][] normalize(final float[][] matrixToNormalize, float newMin, float newMax){
+    public static float[][] normalize(final float[][] matrixToNormalize, float newMin, float newMax){
         float[] oldMinMax = getMinMax(matrixToNormalize);
         float oldMin = oldMinMax[0];
         float oldMax = oldMinMax[1];
@@ -243,12 +261,6 @@ public class StaticDepthHelpers {
     static float linearize(float z_b, float zNear, float zFar){
         float z_n = 2.0f * z_b - 1.0f;
         float z_e = 2.0f * zNear * zFar / (zFar + zNear - z_n * (zFar - zNear));
-        return z_e;
-    }
-
-    static float linearize1(float z_b, float n, float f){
-        float z_n = 2.0f * z_b - 1.0f;
-        float z_e = 2.0f * n * f / (f + n - z_n * (f - n));
         return z_e;
     }
 
@@ -353,7 +365,7 @@ public class StaticDepthHelpers {
         return floatArr;
     }
 
-    static float[][] toMatrix(float[] floatArr, int matrixWidth){
+    public static float[][] toMatrix(float[] floatArr, int matrixWidth){
         if(floatArr.length % matrixWidth != 0)
             throw new IllegalArgumentException("matrixWidth does not match floatArr.length");
         float[][] floatMatrix = new float[floatArr.length/matrixWidth][matrixWidth];
@@ -365,7 +377,7 @@ public class StaticDepthHelpers {
         return floatMatrix;
     }
 
-    static float[][] flip(float[][] floatArr){
+    public static float[][] flip(float[][] floatArr){
         float[][] flipped = new float[floatArr.length][floatArr[0].length];
         for (int x = 0; x < floatArr.length; x++) {
             for (int y = 0; y < floatArr[0].length; y++) {

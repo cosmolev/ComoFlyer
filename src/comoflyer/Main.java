@@ -10,13 +10,17 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        OffscreenComoFlyer app = new OffscreenComoFlyer();
-        Pair<BufferedImage,BufferedImage> images = app.getImages();
+        OffscreenComoFlyer app = new OffscreenComoFlyer(45.924008, 7.735102,-600/*manual altitude correction*/);
+        Pair<BufferedImage,float[][]> images = app.getImages();
+        float[][] distanceMatrix = images.getValue();
+        float[][] linearizedMatrix = StaticDepthHelpers.linearize(distanceMatrix, 8, 15000);
+        BufferedImage depthMaskNormalized = StaticDepthHelpers.getDepthImage(distanceMatrix);
         File outputPanorama = new File("dpanorama.png");
         File outputDepth = new File("depth.png");
         try {
             ImageIO.write(images.getKey(), "png", outputPanorama);
-            ImageIO.write(images.getValue(), "png", outputDepth);
+            ImageIO.write(depthMaskNormalized, "png", outputDepth);
+            StaticDepthHelpers.saveToCsv(linearizedMatrix, "linearized.csv");
         } catch (IOException e) {
             e.printStackTrace();
         }

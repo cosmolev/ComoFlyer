@@ -13,6 +13,10 @@ import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
+import demtools.HgtReader;
+import javafx.util.Pair;
+
+import java.io.IOException;
 
 public class StaticHelpers {
 
@@ -36,7 +40,8 @@ public class StaticHelpers {
         return l;
     }
 
-    static TerrainQuad createTerrain(AssetManager assetManager) {
+    static Pair<TerrainQuad,Float> createTerrain(AssetManager assetManager,
+                                     int centerLatitude, int centerLatitudeSeconds, int centerLongitude, int centerLongitudeSeconds) {
         Material matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matRock.setBoolean("useTriPlanarMapping", false);
         matRock.setBoolean("WardIso", true);
@@ -46,22 +51,51 @@ public class StaticHelpers {
         matRock.setTexture("DiffuseMap", white);
         matRock.setFloat("DiffuseMap_0_scale", 64);
 
-        AbstractHeightMap heightmap = null;
-        Texture heightMapImage = assetManager.loadTexture("como512.png");
+        //TerrainQuad terrain = new TerrainQuad("terrain", 65, 513, heightmap.getHeightMap());
+
+        float[] heightMap = new float[]{
+                0,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,1,0,1,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,1,0,1,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,1,0,1,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,1,0,1,0,0,0,0,0,8,8,8,8,8,8,8,8,
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                0,1,0,1,0,5,7,8,0,0,0,0,0,0,0,0,0,
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                0,1,0,1,0,0,0,0,0,0,0,0,8,8,0,0,0,
+                0,0,0,0,0,0,0,0,0,0,0,0,8,8,0,0,0,
+                0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        };
+
+
+        float height = 0;
         try {
-            heightmap = new ImageBasedHeightMap(heightMapImage.getImage(), 0.25f);
-            heightmap.load();
-        } catch (Exception e) {
+            Pair<float[],Float> pair = HgtReader.processWithNegatives(centerLatitude,centerLatitudeSeconds,centerLongitude,centerLongitudeSeconds);
+            heightMap = pair.getKey();
+            height = pair.getValue();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        TerrainQuad terrain = new TerrainQuad("terrain", 65, 513, heightmap.getHeightMap());
+
+        //TerrainQuad terrain = new TerrainQuad("terrain",2,17,heightMap);
+        TerrainQuad terrain = new TerrainQuad("terrain",129,(int)Math.sqrt((double)heightMap.length),heightMap);
+
         terrain.setMaterial(matRock);
-        terrain.setLocalScale(new Vector3f(5, 5, 5));
-        terrain.setLocalTranslation(new Vector3f(0, -30, 0));
+        terrain.setLocalScale(new Vector3f(HgtReader.TERRAIN_SCALE, HgtReader.TERRAIN_SCALE, HgtReader.TERRAIN_SCALE));
+        //terrain.setLocalTranslation(new Vector3f(0, -30, 0));
         terrain.setLocked(false); // unlock it so we can edit the height
 
         terrain.setShadowMode(RenderQueue.ShadowMode.Receive);
-        return terrain;
+
+
+
+        return new Pair<>(terrain,height);
     }
 
 }
