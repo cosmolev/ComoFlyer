@@ -1,10 +1,11 @@
-package comoflyer;
+package renderengine;
 
 import com.jme3.post.SceneProcessor;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.texture.FrameBuffer;
+import comoflyer.OffscreenComoFlyer;
 
 public class OffscreenSceneProcessor implements SceneProcessor {
 

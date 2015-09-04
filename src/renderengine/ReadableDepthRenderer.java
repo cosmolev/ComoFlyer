@@ -1,6 +1,5 @@
-package comoflyer;
+package renderengine;
 
-import com.jme3.renderer.lwjgl.LwjglRenderer;
 import com.jme3.util.BufferUtils;
 import org.lwjgl.opengl.GL11;
 

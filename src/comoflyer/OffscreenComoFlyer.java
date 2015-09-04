@@ -14,6 +14,8 @@ import com.jme3.texture.Image.Format;
 import com.jme3.util.BufferUtils;
 import com.jme3.util.Screenshots;
 import javafx.util.Pair;
+import renderengine.OffscreenSceneProcessor;
+import renderengine.ReadableDepthRenderer;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;

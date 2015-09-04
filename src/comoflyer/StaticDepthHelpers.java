@@ -101,7 +101,7 @@ public class StaticDepthHelpers {
         return image;
     }
 
-    static BufferedImage arrayToImage(float[][] array){
+    public static BufferedImage arrayToImage(float[][] array){
         //BufferedImage image = new BufferedImage(array[0].length, array.length, BufferedImage.TYPE_INT_RGB);
         BufferedImage image = new BufferedImage(array[0].length, array.length, BufferedImage.TYPE_BYTE_GRAY);
 
@@ -174,7 +174,7 @@ public class StaticDepthHelpers {
         return image;
     }
 
-    static double[] computeAnglesScaledFromBottom(int height, double angle){
+    public static double[] computeAnglesScaledFromBottom(int height, double angle){
         double[] anglesScaledFromCenter = computeAngles(height,angle);
 
         double[] anglesScaledFromBottom = new double[anglesScaledFromCenter.length];

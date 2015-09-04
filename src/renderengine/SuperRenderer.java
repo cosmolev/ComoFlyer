@@ -1,4 +1,4 @@
-package comoflyer;
+package renderengine;
 
 import com.jme3.light.LightList;
 import com.jme3.material.RenderState;
@@ -25,7 +25,6 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapAxis;
 import com.jme3.util.BufferUtils;
 import com.jme3.util.ListMap;
-import com.jme3.util.NativeObject;
 import com.jme3.util.NativeObjectManager;
 import com.jme3.util.SafeArrayList;
 import java.nio.*;
