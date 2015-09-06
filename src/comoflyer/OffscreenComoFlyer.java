@@ -24,6 +24,8 @@ public class OffscreenComoFlyer extends GeoApplication {
 
     private FrameBuffer offBuffer;
 
+    static final float CORRECTION = 0.97f;
+
     static final float FRUSTUM_NEAR_PLANE = 1;
     static final float FRUSTUM_FAR_PLANE = 30000;
 

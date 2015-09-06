@@ -264,6 +264,16 @@ public class StaticDepthHelpers {
         return z_e;
     }
 
+    static float[][] applyCorrection(final float[][] matrixToCorrect, final float correctionCoefficient){
+        float[][] correctedMatrix = new float[matrixToCorrect.length][matrixToCorrect[0].length];
+        for (int x = 0; x < matrixToCorrect.length; x++) {
+            for (int y = 0; y < matrixToCorrect[0].length; y++) {
+                correctedMatrix[x][y] = matrixToCorrect[x][y]*correctionCoefficient;
+            }
+        }
+        return correctedMatrix;
+    }
+
     static float[][] linearize(final float[][] matrixToLinearize, float zNear, float zFar){
         float[][] linearizedMatrix = new float[matrixToLinearize.length][matrixToLinearize[0].length];
         for (int x = 0; x < matrixToLinearize.length; x++) {
