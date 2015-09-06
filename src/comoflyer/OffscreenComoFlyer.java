@@ -24,6 +24,9 @@ public class OffscreenComoFlyer extends GeoApplication {
 
     private FrameBuffer offBuffer;
 
+    static final float FRUSTUM_NEAR_PLANE = 1;
+    static final float FRUSTUM_FAR_PLANE = 30000;
+
     private static final int NUM_OF_ROTATIONS = 8;
     private int width = 800, height = 800;
 
@@ -113,7 +116,7 @@ public class OffscreenComoFlyer extends GeoApplication {
         Node mainScene = setSomeCommonSettings();
         offView.attachScene(mainScene);
 
-        cam.setFrustumPerspective(45f, 1f, 1, 30000);
+        cam.setFrustumPerspective(45f, 1f, FRUSTUM_NEAR_PLANE, FRUSTUM_FAR_PLANE);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package comoflyer;
 
+import demtools.HgtReader;
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
@@ -14,7 +15,7 @@ public class Main {
         OffscreenComoFlyer app = new OffscreenComoFlyer(45.5, 6.5);
         Pair<BufferedImage,float[][]> images = app.getImages();
         float[][] distanceMatrix = images.getValue();
-        float[][] linearizedMatrix = StaticDepthHelpers.linearize(distanceMatrix, 8, 15000);
+        float[][] linearizedMatrix = StaticDepthHelpers.linearize(distanceMatrix, OffscreenComoFlyer.FRUSTUM_NEAR_PLANE*(HgtReader.METERS_IN_SECOND/HgtReader.TERRAIN_SCALE) , OffscreenComoFlyer.FRUSTUM_FAR_PLANE*(HgtReader.METERS_IN_SECOND/HgtReader.TERRAIN_SCALE));
         BufferedImage depthMaskNormalized = StaticDepthHelpers.getDepthImage(distanceMatrix);
         File outputPanorama = new File("panorama.png");
         File outputDepth = new File("depth.png");
