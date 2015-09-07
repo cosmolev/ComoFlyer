@@ -16,14 +16,13 @@ public class Main {
         Pair<BufferedImage,float[][]> images = app.getImages();
         float[][] distanceMatrix = images.getValue();
         float[][] linearizedMatrix = StaticDepthHelpers.linearize(distanceMatrix, OffscreenComoFlyer.FRUSTUM_NEAR_PLANE * (HgtReader.METERS_IN_SECOND / HgtReader.TERRAIN_SCALE), OffscreenComoFlyer.FRUSTUM_FAR_PLANE * (HgtReader.METERS_IN_SECOND / HgtReader.TERRAIN_SCALE));
-        float[][] correctedMatrix = StaticDepthHelpers.applyCorrection(linearizedMatrix,OffscreenComoFlyer.CORRECTION);
         BufferedImage depthMaskNormalized = StaticDepthHelpers.getDepthImage(distanceMatrix);
         File outputPanorama = new File("panorama.png");
         File outputDepth = new File("depth.png");
         try {
             ImageIO.write(images.getKey(), "png", outputPanorama);
             ImageIO.write(depthMaskNormalized, "png", outputDepth);
-            StaticDepthHelpers.saveToCsv(correctedMatrix, "linearized.csv");
+            StaticDepthHelpers.saveToCsv(linearizedMatrix, "linearized.csv");
         } catch (IOException e) {
             e.printStackTrace();
         }
